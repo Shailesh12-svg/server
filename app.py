@@ -65,42 +65,6 @@ def register():
 
     return jsonify({"msg":"Registration successful "}),201
 
-# Data visualization route
-@app.route('/visualize_data', methods=['POST'])
-def visualize_data():
-    try:
-        df = pd.read_csv('water_potability.csv')
-
-        countplot = sns.countplot(x='Potability', data=df)
-        countplot_img = save_plot_to_base64(countplot)
-
-        ph_histogram = sns.histplot(data=df, x='ph', kde=True)
-        ph_histogram_img = save_plot_to_base64(ph_histogram)
-
-        all_feature_histograms = sns.pairplot(df)
-        all_feature_histograms_img = save_plot_to_base64(all_feature_histograms)
-
-        correlation_heatmap = sns.heatmap(df.corr(), annot=True)
-        correlation_heatmap_img = save_plot_to_base64(correlation_heatmap)
-
-        return jsonify({
-            'countplot_img': countplot_img,
-            'ph_histogram_img': ph_histogram_img,
-            'all_feature_histograms_img': all_feature_histograms_img,
-            'correlation_heatmap_img': correlation_heatmap_img
-        })
-    except FileNotFoundError:
-        return jsonify({"msg": "CSV file not found"}), 404
-    except Exception as e:
-        return jsonify({"msg": str(e)}), 500
-
-# Helper function to save plot to base64
-def save_plot_to_base64(plot):
-    buf = io.BytesIO()
-    plot.figure.savefig(buf, format='png')
-    buf.seek(0)
-    img_base64 = base64.b64encode(buf.read()).decode('utf-8')
-    return img_base64
 
 if __name__ == '__main__':
     app.run(debug=True)

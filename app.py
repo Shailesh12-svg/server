@@ -28,7 +28,7 @@ with open('assets/model.pkl', 'rb') as f:
     model = pickle.load(f)
 
 # Login route
-@app.route("/token", methods=['POST'])
+@app.route("https://server-weld-two-29.vercel.app/token", methods=['POST'])
 def login():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
@@ -41,7 +41,7 @@ def login():
         return jsonify({"msg":"Bad username or Password"})
 
 # Prediction route
-@app.route('/predict_water_quality', methods=['POST'])
+@app.route('https://server-weld-two-29.vercel.app/predict_water_quality', methods=['POST'])
 @jwt_required()  
 def predict_water_quality():
     data = request.json
@@ -53,7 +53,7 @@ def predict_water_quality():
         return jsonify({"result": 'potable'})
 
 # Registration route
-@app.route("/register",methods=['POST'])
+@app.route("https://server-weld-two-29.vercel.app/register",methods=['POST'])
 def register():
     email = request.json.get('email',None)
     password = request.json.get('password',None)
